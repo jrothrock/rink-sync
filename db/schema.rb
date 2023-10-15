@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_14_011528) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_15_075551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,13 +18,27 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_011528) do
     t.string "url", null: false
     t.string "start_time"
     t.string "end_time"
-    t.string "speed", default: "1", null: false
     t.boolean "nsfw", null: false
     t.bigint "user_id"
     t.string "title"
     t.string "api_url"
-    t.integer "decibles"
+    t.integer "decibels"
     t.index ["user_id"], name: "index_songs_on_user_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "tag_id"
+    t.bigint "song_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["song_id"], name: "index_taggings_on_song_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,4 +55,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_14_011528) do
   end
 
   add_foreign_key "songs", "users"
+  add_foreign_key "taggings", "songs"
+  add_foreign_key "taggings", "tags"
 end

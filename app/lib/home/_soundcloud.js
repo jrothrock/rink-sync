@@ -82,6 +82,7 @@ class SoundCloud {
     loopIncreaseVolume();
   }
 
+
   /**
    * @description Will start the song and gradually increase the volume.
    * @param {number?} startTime - the soundcloud widget.

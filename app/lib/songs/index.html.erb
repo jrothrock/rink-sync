@@ -10,6 +10,7 @@
     padding: 5px;
     margin-bottom: 30px;
   }
+
   .navigation a {
     margin: 0px 20px 0px 0px;
   }
@@ -62,10 +63,13 @@
           End Time: <%= song.end_time %>
         </div>
         <div class='song-info'>
-          Decibles: <%= song.decibles %>
+          Decibels: <%= song.decibels %>
         </div>
         <div class='song-info'>
           NSFW: <%= song.nsfw %>
+        </div>
+        <div class='song-info'>
+          TAGS: <%= song.tags.map(&:name).join(", ") %>
         </div>
         <div class='song-info song-edit'>
           <%= link_to 'Edit Song', edit_song_url(id: song.id) %>
