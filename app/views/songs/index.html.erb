@@ -1,0 +1,70 @@
+<div>
+  <div class='navigation'>
+    <%= link_to 'Home', root_url %>
+    <%= link_to 'New Song', new_song_url %>
+  </div>
+  <div class='songs-container'>
+    <% for song in @songs %>
+      <div class='song-content'>
+        <div class='song-info song-title'>
+          Title: <%= song.title %>
+        </div>
+        <div class='song-info'>
+          URL: <%= song.url %>
+        </div>
+        <div class='song-info'>
+          Start Time: <%= song.start_time %>
+        </div>
+        <div class='song-info'>
+          End Time: <%= song.end_time %>
+        </div>
+        <div class='song-info'>
+          Decibles: <%= song.decibles %>
+        </div>
+        <div class='song-info'>
+          NSFW: <%= song.nsfw %>
+        </div>
+        <div class='song-info song-edit'>
+          <%= link_to 'Edit Song', edit_song_url(id: song.id) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style scoped>
+  a {
+    color: blue
+  }
+
+  .navigation {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    margin-bottom: 30px;
+  }
+  .navigation a {
+    margin: 0px 20px 0px 0px;
+  }
+
+  .song-content {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .song-content .song-info {
+    padding: 5px;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    width: 12%;
+    overflow: scroll;
+    white-space: nowrap;
+  }
+
+  .song-content .song-info.song-title {
+    width: 20%;
+  }
+
+  .song-content .song-info.song-edit {
+    width: 8%;
+  }
+</style>

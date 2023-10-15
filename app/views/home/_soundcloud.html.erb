@@ -1,0 +1,94 @@
+<!-- Styles -->
+<style scoped>
+  .song-contents {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<!-- JavaScript -->
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<script src="<%= javascript_asset_path(module: "home", file: "_soundcloud", format: 'js') %>"></script>
+<script type="module" defer>
+  class SoundCloudPartial {
+    constructor() {
+      this.songDecibel = <%= song.decibles %>;
+      this.lowestDecibel = <%= @lowest_decibel %>;
+      this.normalizedVolume = SoundCloud.normalizeVolume(this.songDecibel, this.lowestDecibel)
+      this.startTime = "<%= song.start_time %>";
+      this.endTime = "<%= song.end_time %>";
+
+      this.widget = undefined;
+      this.playing = false;
+    }
+
+    // Will start and stop the song on space bar press.
+    watchSpaceBar() {
+      let endTimeTimeout = null;
+
+      document.body.onkeyup = (e) => {
+        if (e.key == " " ||
+          e.code == "Space" ||      
+          e.keyCode == 32      
+        ) {
+          if(this.playing === false) {
+            this.widget.play();
+            this.playing = true;
+            SoundCloud.increaseVolume(this.widget, this.normalizedVolume);
+
+            if(this.endTime) {
+              const {startTimeInMicro, endTimeInMicro} = SoundCloud.startAndEndTimesToMicroseconds(this.startTime, this.endTime);
+              const endDifference = endTimeInMicro - startTimeInMicro;
+              // Allow for the 2 seconds of fading out.
+              const endStartIn = endDifference - 2000;
+              endTimeTimeout = setTimeout(() => { SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume) }, endStartIn)
+            }
+          } else {
+            SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume);
+            clearTimeout(endTimeTimeout);
+            this.playing = false;
+          }
+        }
+      }
+    }
+    
+    // Sets the initial start time and volume on the widget.
+    setInitialStartTimeAndVolume() {
+      const { startTimeInMicro } = SoundCloud.startAndEndTimesToMicroseconds(this.startTime, this.endTime);
+      if(startTimeInMicro > 0) {
+        this.widget.seekTo(startTimeInMicro);
+      }
+
+      this.widget.setVolume(0);
+    }
+
+    initialize() {
+      const iframeElement   = document.querySelector('iframe');
+      const iframeElementID = iframeElement.id;
+      const widget          = SC.Widget(iframeElement);
+      
+      widget.bind(SC.Widget.Events.READY, () => {
+        this.widget = widget;
+        this.setInitialStartTimeAndVolume();
+        this.watchSpaceBar();
+      });
+    }
+  }
+
+  const soundCloudInstance = new SoundCloudPartial();
+  soundCloudInstance.initialize();
+</script>
+
+<!-- HTML -->
+<div class='song-contents'>
+  <div>
+    Title: <%= song.title %>
+  </div>
+  <div>
+    NSFW: <%= song.nsfw %>
+  </div>
+  <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+    src="<%= song.url %>">
+  </iframe>
+</div>

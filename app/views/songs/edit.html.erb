@@ -1,0 +1,79 @@
+<div>
+  <div class='page-title'>
+    <h2> Edit Song </h2>
+  </div>
+  <div>
+    <%= form_with model: @song do |f| %>
+      <div class='form-item'>
+        <%= f.label :title, 'Song Title:'%>
+        <%= f.text_field :title %>
+      </div>
+      <div class='form-item'>
+        <%= f.label :url, 'Song URL:'%>
+        <%= f.text_field :url %>
+      </div>
+      <div class='form-item'>
+        <%= f.label :start_time, 'Start Time (not required, default 0.00):'%>
+        <%= f.text_field :start_time %>
+      </div>
+      <div class='form-item'>
+        <%= f.label :end_time, 'End Time (not required, default end of song):'%>
+        <%= f.text_field :end_time %>
+      </div>
+      <div class='form-item'>
+        <%= f.label :decibles, 'Decibles:'%>
+        <%= f.number_field :decibles %>
+      </div>
+      <div class='form-item'>
+        <%= f.label :speed, 'Speed (default 1):'%>
+        <%= f.text_field :speed %>
+      </div>
+      <div class='form-item nsfw-item'>
+        <span>
+          <%= f.radio_button :nsfw, true, :checked => true %> NSFW
+        </span>
+        <span>
+          <%= f.radio_button :nsfw, false %> SFW
+        </span>
+      </div>
+      <div class='form-item'>
+        <%= f.submit class: 'btn-primary clickable' %>
+        <%= link_to "Cancel", songs_url, class: 'btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style scoped>
+  .clickable {
+    cursor: pointer;
+  }
+
+  .page-title {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .page-title h2 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .form-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0px;
+  }
+
+  .form-item.nsfw-item {
+    justify-content: center;
+  }
+
+  .form-item.nsfw-item span {
+    margin-right: 15px;
+  }
+
+  .form-item label {
+    margin-right: 20px;
+  }
+</style>

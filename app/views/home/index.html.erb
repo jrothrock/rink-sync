@@ -1,0 +1,53 @@
+<!-- Styles -->
+<style scoped>
+  a {
+    color: blue;
+  }
+
+  .navigation {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px;
+  }
+
+  .game-state {
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .game-options {
+    margin-top: 20px;
+  }
+</style>
+
+<!-- JavaScript -->
+<script defer>
+</script>
+
+<!-- HTML -->
+<div>
+  <div class='navigation'>
+    <%= link_to 'List Songs', songs_url %>
+    <%= link_to 'New Song', new_song_url %>
+  </div>
+  <div class='game-state'>
+    <div>
+      Total Songs: <%= @total_song_count %>
+    </div>
+    <div>
+      Current NSFW Mode: <%= @music_set_nsfw == true ? "NSFW" : "SFW" %>
+    </div>
+    <div>
+      Number of songs played for game: <%= @music_already_played.length %>
+    </div>
+  </div>
+
+  <%= render :partial => 'soundcloud', collection: @songs, as: :song %>
+  
+  <div class='game-options'>
+    <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'btn-primary' %>
+    <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'btn-primary' %>
+  </div>
+</div>
