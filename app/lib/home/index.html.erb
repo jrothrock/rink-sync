@@ -19,7 +19,15 @@
 
   .game-options {
     margin-top: 20px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
+
+  .song-type {
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
   .song-player {
     width: 40%;
     margin-top: 20px;
@@ -41,6 +49,9 @@
       Total Songs: <%= @total_song_count %>
     </div>
     <div>
+      Total Songs For Tag (<%= @music_type %>): <%= @total_song_count_for_tag %>
+    </div>
+    <div>
       Current NSFW Mode: <%= @music_set_nsfw == true ? "NSFW" : "SFW" %>
     </div>
     <div>
@@ -50,7 +61,15 @@
 
   <%= render :partial => 'soundcloud', collection: @songs, as: :song %>
   
+  <div class="song-type">
+    <p>Choose Song Type</p>
+    <% @tags.each do |tag| %>
+      <%= link_to tag.name, root_url(nsfw: "#{@music_set_nsfw}", tag: tag.name), class: 'waves-effect waves-light btn' %>
+    <% end %>
+  </div>
+  
   <div class='game-options'>
+    <p> Start New Game </p>
     <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'waves-effect waves-light btn' %>
     <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'waves-effect waves-light btn' %>
   </div>

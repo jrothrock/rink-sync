@@ -9,7 +9,6 @@
     color: white;
   }
 
-
   .page-title {
     border-bottom: 3px solid rgba(0, 0, 0, 0.3);
   }
@@ -41,10 +40,25 @@
   .form-item.submit {
     margin-top: 40px;
   }
+
+  .select-wrapper {
+    width: 100%;
+  }
 </style>
 
-<!-- JavaScripts -->
+<!-- JavaScript -->
 <script defer>
+  class NewSong {
+    initialize() {
+      document.addEventListener('DOMContentLoaded', function() {
+        const elems = document.querySelectorAll('select');
+        const instances = M.FormSelect.init(elems);
+      });
+    }
+  }
+
+  const newSongInstaance = new NewSong();
+  newSongInstaance.initialize();
 </script>
 
 <!-- HTML -->
@@ -71,12 +85,12 @@
         <%= f.label :end_time, 'End Time (not required, default end of song):'%>
       </div>
       <div class='input-field form-item'>
-        <%= f.number_field :decibles %>
-        <%= f.label :decibles, 'Decibles:'%>
+        <%= f.number_field :decibels %>
+        <%= f.label :decibels, 'Decibels:'%>
       </div>
-      <div class='input-field form-item'>
-        <%= f.text_field :speed %>
-        <%= f.label :speed, 'Speed (default 1):'%>
+      <div class="input-field form-item">
+        <%= f.collection_select(:tag_ids, Tag.all, :id, :name, {}, { multiple: true }) %>
+        <%= f.label :tag_ids, 'Select Tags' %>
       </div>
       <div class='form-item nsfw-item'>
         <label>
