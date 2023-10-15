@@ -18,5 +18,10 @@ module RinkSync
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.eager_load_paths << Rails.root.join('app', 'lib')
+    config.eager_load_paths.concat(Rails.root.join('app', 'lib').glob("**/").select {|route| route.to_s.include?("app")})
+
+    config.paths["app/views"] << Rails.root.join('app')
+    config.paths["app/views"] << Rails.root.join('app', 'lib')
   end
 end
