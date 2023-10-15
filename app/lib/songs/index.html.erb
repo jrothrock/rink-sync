@@ -1,37 +1,4 @@
-<div>
-  <div class='navigation'>
-    <%= link_to 'Home', root_url %>
-    <%= link_to 'New Song', new_song_url %>
-  </div>
-  <div class='songs-container'>
-    <% for song in @songs %>
-      <div class='song-content'>
-        <div class='song-info song-title'>
-          Title: <%= song.title %>
-        </div>
-        <div class='song-info'>
-          URL: <%= song.url %>
-        </div>
-        <div class='song-info'>
-          Start Time: <%= song.start_time %>
-        </div>
-        <div class='song-info'>
-          End Time: <%= song.end_time %>
-        </div>
-        <div class='song-info'>
-          Decibles: <%= song.decibles %>
-        </div>
-        <div class='song-info'>
-          NSFW: <%= song.nsfw %>
-        </div>
-        <div class='song-info song-edit'>
-          <%= link_to 'Edit Song', edit_song_url(id: song.id) %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
-
+<!-- Styles -->
 <style scoped>
   a {
     color: blue
@@ -68,3 +35,42 @@
     width: 8%;
   }
 </style>
+
+<!-- JavaScript -->
+<script defer>
+</script>
+
+<!-- HTML -->
+<div>
+  <div class='navigation'>
+    <%= link_to 'Home', root_url %>
+    <%= link_to 'New Song', new_song_url %>
+  </div>
+  <div class='songs-container'>
+    <% for song in @songs %>
+      <div class='song-content'>
+        <div class='song-info song-title'>
+          Title: <%= song.title %>
+        </div>
+        <div class='song-info'>
+          URL: <%= song.url %>
+        </div>
+        <div class='song-info'>
+          Start Time: <%= song.start_time %>
+        </div>
+        <div class='song-info'>
+          End Time: <%= song.end_time %>
+        </div>
+        <div class='song-info'>
+          Decibles: <%= song.decibles %>
+        </div>
+        <div class='song-info'>
+          NSFW: <%= song.nsfw %>
+        </div>
+        <div class='song-info song-edit'>
+          <%= link_to 'Edit Song', edit_song_url(id: song.id) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
