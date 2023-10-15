@@ -4,6 +4,12 @@
     cursor: pointer;
   }
 
+  .clickable > input {
+    cursor: pointer;
+    color: white;
+  }
+
+
   .page-title {
     border-bottom: 3px solid rgba(0, 0, 0, 0.3);
   }
@@ -48,41 +54,43 @@
   </div>
   <div>
     <%= form_with model: @song, url: songs_path, method: :post, local: true do |f| %>
-      <div class='form-item'>
-        <%= f.label :title, 'Song Title:'%>
+      <div class='input-field form-item'>
         <%= f.text_field :title %>
+        <%= f.label :title, 'Song Title:'%>
       </div>
-      <div class='form-item'>
-        <%= f.label :url, 'Song URL:'%>
+      <div class='input-field form-item'>
         <%= f.text_field :url %>
+        <%= f.label :url, 'Song URL:'%>
       </div>
-      <div class='form-item'>
-        <%= f.label :start_time, 'Start Time (not required, default 0.00):'%>
+      <div class='input-field form-item'>
         <%= f.text_field :start_time %>
+        <%= f.label :start_time, 'Start Time (not required, default 0.00):'%>
       </div>
-      <div class='form-item'>
-        <%= f.label :end_time, 'End Time (not required, default end of song):'%>
+      <div class='input-field form-item'>
         <%= f.text_field :end_time %>
+        <%= f.label :end_time, 'End Time (not required, default end of song):'%>
       </div>
-      <div class='form-item'>
-        <%= f.label :decibles, 'Decibles:'%>
+      <div class='input-field form-item'>
         <%= f.number_field :decibles %>
+        <%= f.label :decibles, 'Decibles:'%>
       </div>
-      <div class='form-item'>
-        <%= f.label :speed, 'Speed (default 1):'%>
+      <div class='input-field form-item'>
         <%= f.text_field :speed %>
+        <%= f.label :speed, 'Speed (default 1):'%>
       </div>
       <div class='form-item nsfw-item'>
-        <span>
-          <%= f.radio_button :nsfw, true, :checked => true %> NSFW
-        </span>
-        <span>
-          <%= f.radio_button :nsfw, false %> SFW
-        </span>
+        <label>
+          <%= f.radio_button :nsfw, true, :checked => true %>
+          <span>NSFW</span>
+        </label>
+        <label>
+          <%= f.radio_button :nsfw, false %>
+          <span>SFW</span>
+        </label>
       </div>
       <div class='form-item submit'>
-        <%= f.submit class: 'btn-primary clickable' %>
-        <%= link_to "Cancel", root_url, class: 'btn-primary' %>
+        <%= f.submit class: 'waves-effect waves-light btn clickable' %>
+        <%= link_to "Cancel", root_url, class: 'waves-effect waves-light btn' %>
       </div>
     <% end %>
   </div>
