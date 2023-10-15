@@ -1,0 +1,160 @@
+<!-- Styles -->
+<style scoped>
+  .song-contents, .inner-song-player {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .inner-song-player {
+    display: flex;
+    justify-content: space-around;
+    color: lightgrey;
+  }
+  
+  .button {
+    cursor: pointer;
+  }
+</style>
+
+<!-- JavaScript -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="<%= javascript_asset_path(module: "home", file: "_youtube", format: 'js') %>"></script>
+<script type="module" defer>
+  class YouTubePartial {
+    constructor() {
+      this.songId = <%= song.id %>;
+      this.songDecibel = <%= song.decibels || 100 %>;
+      this.lowestDecibel = <%= @lowest_decibel %>;
+      this.normalizedVolume = YouTube.normalizeVolume(this.songDecibel, this.lowestDecibel);
+      this.startTime = "<%= song.start_time %>";
+      this.endTime = "<%= song.end_time %>";
+      this.endTimeTimeout = nullS;
+      this.nextSongTimeout = null;
+
+      this.player = undefined;
+      this.playing = false;
+    }
+
+    stopSong() {
+      // The fadeout doesn't work on mobile phones.
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        this.player.pause();
+      } else {
+        YouTube.decreaseVolumeAndStop(this.player, this.normalizedVolume);
+      }
+
+      this.playing = false;
+
+      const playBtn = document.getElementById('play-button');
+      playBtn.innerHTML = 'play_circle_outline';
+ 
+      // Move to the next song after 8 seconds.
+      this.nextSongTimeout = setTimeout(() => { window.location.href = window.location.href}, 8000);
+    }
+
+    songTogglePlay() {
+      const playBtn = document.getElementById('play-button');
+      if(this.playing === false) {
+        // If accidentally stop song, then restart, don't reload.
+        clearTimeout(this.nextSongTimeout);
+        this.player.play();
+        this.playing = true;
+        YouTube.increaseVolume(this.player, this.normalizedVolume);
+        playBtn.innerHTML = 'stop';
+
+        if(this.endTime) {
+          const {startTimeInMicro, endTimeInMicro} = YouTube.startAndEndTimesToSeconds(this.startTime, this.endTime);
+          const endDifference = endTimeInMicro - startTimeInMicro;
+          // Allow for the 2 seconds of fading out.
+          const endStartIn = endDifference - 2;
+          this.endTimeTimeout = setTimeout(() => { this.stopSong() }, endStartIn)
+        }
+      } else {
+        clearTimeout(this.endTimeTimeout);
+        this.stopSong();
+      }
+    }
+
+    watchSkipSong() {
+      const skipBtn = document.getElementById('skip-button');
+      skipBtn.addEventListener('click', () => {
+        const currentURL = window.location.href;
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+
+        const newPage = '/skip_song';
+
+        let newURL = newPage;
+        if (Object.keys(params).length > 0) {
+          const searchParams = new URLSearchParams(params);
+          newURL += `?${searchParams.toString()}`;
+          newURL += `&song_id=${this.songId}`;
+        } else {
+          newURL += `?song_id=${this.songId}`;
+        }
+
+        window.location.href = newURL;
+      });
+    }
+
+    watchPlayButton() {
+      const playBtn = document.getElementById('play-button');
+      playBtn.addEventListener('click', () => {
+        this.songTogglePlay();
+      });
+    }
+
+    // Will start and stop the song on space bar press.
+    watchSpaceBar() {
+      document.body.onkeyup = (e) => {
+        if (e.key == " " ||
+          e.code == "Space" ||      
+          e.keyCode == 32      
+        ) {
+          this.songTogglePlay();
+        }
+      }
+    }
+
+    initialize() {
+      const { startTimeInSeconds, endTimeInSeconds} = YouTube.startAndEndTimesToSeconds(this.startTime, this.endTime);
+      const playerVars = { 
+        volume: 0
+      }
+      const videoId = this.songUrl.split("v=")[1];
+
+      if(this.endTime) {
+        playerVars["end"] = endTimeInSeconds;
+      }
+
+      if(this.startTime) {
+        playerVars["start"] = startTimeInSeconds;
+      }
+
+
+      this.player = new YT.Player('player', { height: '360',width: '640', videoId: videoId, playerVars: playerVars});
+    }
+  }
+
+  const youtubeInstance = new YouTubePartial();
+  youtubeInstance.initialize();
+</script>
+
+<!-- HTML -->
+<div class='song-container'>
+  <div class='song-contents'>
+    <div>
+      Title: <%= song.title %>
+    </div>
+    <div>
+      NSFW: <%= song.nsfw %>
+    </div>
+    <div id="player"></div>
+  </div>
+  <div class='inner-song-player' id='song-player'>
+    <i class="medium material-icons button" id='play-button'>play_circle_outline</i>
+    <i class="medium material-icons button" id='skip-button'>skip_next</i>
+  </div>
+</div>

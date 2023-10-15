@@ -24,7 +24,7 @@
   class SoundCloudPartial {
     constructor() {
       this.songId = <%= song.id %>;
-      this.songDecibel = <%= song.decibels %>;
+      this.songDecibel = <%= song.decibels || 100 %>;
       this.lowestDecibel = <%= @lowest_decibel %>;
       this.normalizedVolume = SoundCloud.normalizeVolume(this.songDecibel, this.lowestDecibel)
       this.startTime = "<%= song.start_time %>";
@@ -40,7 +40,7 @@
       // The fadeout doesn't work on mobile phones.
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
-        widget.pause();
+        this.widget.pause();
       } else {
         SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume);
       }

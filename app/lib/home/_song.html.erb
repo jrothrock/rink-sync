@@ -1,0 +1,16 @@
+<!-- Styles -->
+<style scoped>
+</style>
+
+<!-- JavaScript -->
+<script defer>
+</script>
+
+<!-- HTML -->
+<div>
+  <% if song.is_soundcloud? %>
+    <%= render :partial => 'soundcloud', locals: { song: song }%>
+  <% else %>
+    <%= render :partial => 'youtube', locals: { song: song } %>
+  <% end %>
+</div>
