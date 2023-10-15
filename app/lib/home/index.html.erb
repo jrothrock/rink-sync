@@ -20,6 +20,10 @@
   .game-options {
     margin-top: 20px;
   }
+  .song-player {
+    width: 40%;
+    margin-top: 20px;
+  }
 </style>
 
 <!-- JavaScript -->
@@ -27,7 +31,7 @@
 </script>
 
 <!-- HTML -->
-<div>
+<div class="song-player">
   <div class='navigation'>
     <%= link_to 'List Songs', songs_url %>
     <%= link_to 'New Song', new_song_url %>
@@ -47,7 +51,7 @@
   <%= render :partial => 'soundcloud', collection: @songs, as: :song %>
   
   <div class='game-options'>
-    <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'btn-primary' %>
-    <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'btn-primary' %>
+    <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'waves-effect waves-light btn' %>
+    <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'waves-effect waves-light btn' %>
   </div>
 </div>
