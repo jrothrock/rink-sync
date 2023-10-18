@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
     @music_type = params[:tag] || "period"
 
-    @lowest_decibel = current_user.songs.order("decibels ASC").first.decibels
+    @lowest_decibel = current_user.songs.order("decibels ASC").first&.decibels || 0
 
     ###
     # Total Songs Count For NSFW Mode

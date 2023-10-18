@@ -1,4 +1,4 @@
-redis_url = ENV.fetch("REDIS_URL")
+redis_url = ENV["REDIS_URL"]
 if redis_url
   REDIS = Redis.new(url: redis_url)
 else
