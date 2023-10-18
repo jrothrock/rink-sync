@@ -48,13 +48,25 @@ sudo DOKKU_TAG=v0.31.5 bash bootstrap.sh
 # Setup Dokku
 echo "SETTING UP DOKKU"
 cat /home/deploy/.ssh/authorized_keys | dokku ssh-keys:add admin
-dokku domains:set-global rink.jackrothrock.com
+dokku domains:set-global rink-sync.jackrothrock.com
 
 # Configure Dokku
 echo "CONFIGURING DOKKU"
 dokku apps:create rink-sync
 sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git
 dokku plugin:install https://github.com/dokku/dokku-redis.git redis
+
+echo "CONFIGURING POSTGRES"
 dokku postgres:create rink_sync_production
 dokku postgres:link rink_sync_production rink-sync
 
+echo "CONFIGURING REDIS"
+dokku redis:create rink_sync_redis_production
+dokku redis:link rink_sync_redis_production rink-sync
+
+echo "UPDATE NGINX PORT LISTENER"
+dokku ports:add rink-sync http:80:3000
+
+echo "SETTING SECRET KEY BASE"
+echo $(openssl rand -base64 24) >> .secret_key_base
+dokku config:set rink-sync SECRET_KEY_BASE=$(cat .secret_key_base)
