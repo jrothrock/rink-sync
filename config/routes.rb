@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :songs
 
+  get "/skip_song", to: "home#skip_song"
   get "/new_game", to: "home#new_game"
 
   get 'views/javascript/:module/:file', to: 'assets#javascript', as: 'javascript_asset', format: 'js'

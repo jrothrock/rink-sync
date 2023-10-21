@@ -50,6 +50,12 @@ class HomeController < ApplicationController
     end
   end
 
+  def skip_song
+    REDIS.srem("already_played", params[:song_id])
+
+    redirect_to root_url(nsfw: params[:nsfw], tag: params[:tag])
+  end
+
   def new_game
     REDIS.del("already_played")
 
