@@ -23,14 +23,22 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
+  .game-option-buttons, .song-type-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .song-type {
     padding: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .song-player {
-    width: 40%;
     margin-top: 20px;
+  }
+
+  .inner-button {
+    margin: 10px;
   }
 </style>
 
@@ -39,7 +47,7 @@
 </script>
 
 <!-- HTML -->
-<div class="song-player">
+<div class="song-player col l5 s12">
   <div class='navigation'>
     <%= link_to 'List Songs', songs_url %>
     <%= link_to 'New Song', new_song_url %>
@@ -61,16 +69,20 @@
 
   <%= render :partial => 'soundcloud', collection: @songs, as: :song %>
   
-  <div class="song-type">
+  <div class="song-type col s12">
     <p>Choose Song Type</p>
-    <% @tags.each do |tag| %>
-      <%= link_to tag.name, root_url(nsfw: "#{@music_set_nsfw}", tag: tag.name), class: 'waves-effect waves-light btn' %>
-    <% end %>
+    <div class='song-type-buttons'>
+      <% @tags.each do |tag| %>
+        <%= link_to tag.name, root_url(nsfw: "#{@music_set_nsfw}", tag: tag.name), class: 'waves-effect waves-light btn col s4 inner-button' %>
+      <% end %>
+    </div>
   </div>
   
-  <div class='game-options'>
+  <div class='game-options col s12'>
     <p> Start New Game </p>
-    <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'waves-effect waves-light btn' %>
-    <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'waves-effect waves-light btn' %>
+    <div class='game-option-buttons'>
+      <%= link_to 'New SFW Game', new_game_url(nsfw: "false"), class: 'waves-effect waves-light btn col s6 inner-button' %>
+      <%= link_to 'New NSFW Game', new_game_url(nsfw: "true"), class: 'waves-effect waves-light btn col s6 inner-button' %>
+    </div>
   </div>
 </div>

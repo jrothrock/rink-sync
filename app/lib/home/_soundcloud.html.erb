@@ -129,6 +129,11 @@
         const songPlayerIcons = document.getElementById('song-player');
         songPlayerIcons.style.color = "black";
       });
+
+      // Reload the next song after finish
+      widget.bind(SC.Widget.Events.FINISH, () => {
+        window.location.href = window.location.href;
+      })
     }
   }
 
