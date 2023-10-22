@@ -42,7 +42,7 @@ class YouTube {
           } else {
               // Ensure the final volume is set to the target
               player.setVolume(targetVolume);
-              player.pause();
+              player.pauseVideo();
           }
       }
 
