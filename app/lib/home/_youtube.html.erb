@@ -11,6 +11,11 @@
     justify-content: space-around;
     color: lightgrey;
   }
+
+  .song-contents iframe {
+    width: 100%;
+    height: 100%;
+  }
   
   .button {
     cursor: pointer;
@@ -41,7 +46,7 @@
       // The fadeout doesn't work on mobile phones.
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
-        this.player.pause();
+        this.player.stopVideo();
       } else {
         YouTube.decreaseVolumeAndStop(this.player, this.normalizedVolume);
       }
@@ -60,7 +65,7 @@
       if(this.playing === false) {
         // If accidentally stop song, then restart, don't reload.
         clearTimeout(this.nextSongTimeout);
-        this.player.play();
+        this.player.playVideo();
         this.playing = true;
         YouTube.increaseVolume(this.player, this.normalizedVolume);
         playBtn.innerHTML = 'stop';
@@ -135,7 +140,15 @@
       }
 
       window.YT.ready(() => {
-        this.player = new YT.Player('player', { height: '360',width: '640', videoId: videoId, playerVars: playerVars});
+        this.player = new YT.Player('player', { videoId: videoId, playerVars: playerVars});
+        this.setInitialStartTimeAndVolume();
+
+        this.watchSpaceBar();
+        this.watchPlayButton();
+        this.watchSkipSong();
+
+        const songPlayerIcons = document.getElementById('song-player');
+        songPlayerIcons.style.color = "black";
       });
     }
   }
