@@ -84,9 +84,9 @@ class SoundCloud {
 
 
   /**
-   * @description Will start the song and gradually increase the volume.
-   * @param {number?} startTime - the soundcloud widget.
-   * @param {number?} endTime - the song's normalized volume.
+   * @description Will convert the start and end times to microseconds values.
+   * @param {number?} startTime - start time of the song.
+   * @param {number?} endTime - the endtime o the song
    * @returns { { startTimeInMicro: number, endTimeInMicro: (number | undefined) }}
   */
   static startAndEndTimesToMicroseconds(startTime, endTime) {

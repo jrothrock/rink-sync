@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A hacky modular Rails app. This is more of a thought experiment, and is not really meant to be production level. The code and ux isn't great, but it scratches an itch that I had.
 
-Things you may want to cover:
+I wanted to try making a more modular Rails app, some hacky configuration changes were made and the asset pipeline was removed. Views, controllers and models are now more closely grouped via their domain as opposed to what they are.
 
-* Ruby version
+The app is to fill an itch for playing music at adult hockey games, and it allows inputing a song from either Soundcloud or YouTube, and one can specify the start and stop time. Additionally, songs be tagged, so searching for warmup music vs intra-period stoppage music, as well as trying to normalize the volume between songs is supported as well.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Deployed with Dokku on top of DigitalOcean.

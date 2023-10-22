@@ -36,12 +36,21 @@
       this.playing = false;
     }
 
-    endSong() {
+    stopSong() {
+      // The fadeout doesn't work on mobile phones.
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile) {
+        widget.pause();
+      } else {
+        SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume);
+      }
+
       this.playing = false;
 
       const playBtn = document.getElementById('play-button');
       playBtn.innerHTML = 'play_circle_outline';
-        
+ 
+      // Move to the next song after 8 seconds.
       this.nextSongTimeout = setTimeout(() => { window.location.href = window.location.href}, 8000);
     }
 
@@ -60,12 +69,11 @@
           const endDifference = endTimeInMicro - startTimeInMicro;
           // Allow for the 2 seconds of fading out.
           const endStartIn = endDifference - 2000;
-          this.endTimeTimeout = setTimeout(() => { SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume); this.endSong(); }, endStartIn)
+          this.endTimeTimeout = setTimeout(() => { this.stopSong() }, endStartIn)
         }
       } else {
-        SoundCloud.decreaseVolumeAndStop(this.widget, this.normalizedVolume);
         clearTimeout(this.endTimeTimeout);
-        this.endSong();
+        this.stopSong();
       }
     }
 
@@ -136,7 +144,7 @@
         songPlayerIcons.style.color = "black";
       });
 
-      // Reload the next song after finish
+      // Load the next song after finish
       widget.bind(SC.Widget.Events.FINISH, () => {
         window.location.href = window.location.href;
       })

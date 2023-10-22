@@ -64,7 +64,7 @@ echo "CONFIGURING REDIS"
 dokku redis:create rink_sync_redis_production
 dokku redis:link rink_sync_redis_production rink-sync
 
-echo "UPDATE NGINX PORT LISTENER"
+echo "UPDATING PORT MAPPINGS"
 dokku ports:add rink-sync http:80:3000
 
 echo "SETTING SECRET KEY BASE"
