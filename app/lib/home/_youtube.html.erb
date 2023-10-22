@@ -24,6 +24,7 @@
   class YouTubePartial {
     constructor() {
       this.songId = <%= song.id %>;
+      this.songUrl = <%= song.url %>;
       this.songDecibel = <%= song.decibels || 100 %>;
       this.lowestDecibel = <%= @lowest_decibel %>;
       this.normalizedVolume = YouTube.normalizeVolume(this.songDecibel, this.lowestDecibel);
