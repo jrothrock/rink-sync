@@ -71,11 +71,11 @@
         playBtn.innerHTML = 'stop';
 
         if(this.endTime) {
-          const {startTimeInMicro, endTimeInMicro} = YouTube.startAndEndTimesToSeconds(this.startTime, this.endTime);
-          const endDifference = endTimeInMicro - startTimeInMicro;
+          const {startTimeInSeconds, endTimeInSeconds} = YouTube.startAndEndTimesToSeconds(this.startTime, this.endTime);
+          const endDifferenceSeconds = endTimeInSeconds - startTimeInSeconds;
           // Allow for the 2 seconds of fading out.
-          const endStartIn = endDifference - 2;
-          this.endTimeTimeout = setTimeout(() => { this.stopSong() }, endStartIn)
+          const endStartInMicro = (endDifferenceSeconds - 2) * 1000;
+          this.endTimeTimeout = setTimeout(() => { this.stopSong() }, endStartInMicro)
         }
       } else {
         clearTimeout(this.endTimeTimeout);

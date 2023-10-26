@@ -105,6 +105,6 @@ class YouTube {
       endTimeInSeconds = endTotalSeconds;
     }
     
-    return { startTimeInSeconds, startTimeInSeconds }
+    return { startTimeInSeconds, endTimeInSeconds }
   }
 }
