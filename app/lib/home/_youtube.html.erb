@@ -139,16 +139,23 @@
         playerVars["start"] = startTimeInSeconds;
       }
 
-      window.YT.ready(() => {
+      const onPlayerReady = () => {
         this.watchSpaceBar();
         this.watchPlayButton();
         this.watchSkipSong();
 
         const songPlayerIcons = document.getElementById('song-player');
         songPlayerIcons.style.color = "black";
+      }
 
-        this.player = new YT.Player('player', { videoId: videoId, playerVars: playerVars});
-        this.setInitialStartTimeAndVolume();
+      window.YT.ready(() => {
+        this.player = new YT.Player('player', { 
+          videoId: videoId,
+          playerVars: playerVars,
+          events: {
+            onReady: onPlayerReady,
+          }
+        });
       });
     }
   }
