@@ -38,7 +38,7 @@
 
     stopSong() {
       // The fadeout doesn't work on mobile phones.
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       if (isMobile) {
         this.widget.pause();
       } else {
