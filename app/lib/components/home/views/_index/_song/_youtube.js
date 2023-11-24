@@ -1,4 +1,4 @@
-class SoundCloud {
+class YouTube {
   /**
    * @description takes a song's decibels value and tries to normalize it
    * This is somewhat of an approximation, and isn't the exact
@@ -17,11 +17,11 @@ class SoundCloud {
 
   /**
    * @description Will gradually decrease the volume of the song and stop it.
-   * @param {HTMLElement} widget - the soundcloud widget.
+   * @param {HTMLElement} player - the soundcloud player.
    * @param {number} normalizedVolume - the song's normalized volume.
    * @returns {null}
    */
-  static decreaseVolumeAndStop(widget, normalizedVolume) {
+  static decreaseVolumeAndStop(player, normalizedVolume) {
       const targetVolume = 0;
       const duration = 2000; // 2 seconds
       const interval = 100; // Adjust interval for smoother effect
@@ -37,12 +37,12 @@ class SoundCloud {
 
           if (elapsedTime < duration) {
               currentVolume = startingVolume - ((elapsedTime / duration) * 100);
-              widget.setVolume(currentVolume);
+              player.setVolume(currentVolume);
               setTimeout(loopLowerVolume, interval);
           } else {
               // Ensure the final volume is set to the target
-              widget.setVolume(targetVolume);
-              widget.pause();
+              player.setVolume(targetVolume);
+              player.pauseVideo();
           }
       }
 
@@ -53,11 +53,11 @@ class SoundCloud {
 
   /**
    * @description Will start the song and gradually increase the volume.
-   * @param {HTMLElement} widget - the soundcloud widget.
+   * @param {HTMLElement} player - the soundcloud player.
    * @param {number} normalizedVolume - the song's normalized volume.
    * @returns {null}
   */
-  static increaseVolume(widget, normalizedVolume) {
+  static increaseVolume(player, normalizedVolume) {
     const targetVolume = normalizedVolume;
     const duration = 2000; // 2 seconds
     const interval = 100; // Adjust interval for smoother effect
@@ -71,42 +71,40 @@ class SoundCloud {
 
         if (elapsedTime < duration) {
             currentVolume = (elapsedTime / duration) * targetVolume;
-            widget.setVolume(currentVolume);
+            player.setVolume(currentVolume);
             setTimeout(loopIncreaseVolume, interval);
         } else {
             // Ensure the final volume is set to the target
-            widget.setVolume(targetVolume);
+            player.setVolume(targetVolume);
         }
     }
     
     loopIncreaseVolume();
   }
 
-
   /**
-   * @description Will convert the start and end times to microseconds values.
-   * @param {number?} startTime - start time of the song.
-   * @param {number?} endTime - the endtime o the song
-   * @returns { { startTimeInMicro: number, endTimeInMicro: (number | undefined) }}
+   * @description Will start the song and gradually increase the volume.
+   * @param {number?} startTime - the soundcloud widget.
+   * @param {number?} endTime - the song's normalized volume.
+   * @returns { { startTimeInSeconds: number, startTimeInSeconds: (number | undefined) }}
   */
-  static startAndEndTimesToMicroseconds(startTime, endTime) {
-    let startTimeInMicro = 0;
+  static startAndEndTimesToSeconds(startTime, endTime) {
+    let startTimeInSeconds = 0;
     if(startTime) {
       const startMinuteValueInSeconds = parseInt(startTime.split(":")[0]) * 60;
       const startSecondsValue = parseInt(startTime.split(":")[1]);
       const start_total_seconds = startMinuteValueInSeconds + startSecondsValue;
-      startTimeInMicro = start_total_seconds * 1000;
+      startTimeInSeconds = start_total_seconds;
     } 
 
-    let endTimeInMicro = undefined;
+    let endTimeInSeconds = undefined;
     if(endTime) {
       const endMinuteValueInSeconds = parseInt(endTime.split(":")[0]) * 60;
       const endSecondsValue = parseInt(endTime.split(":")[1]);
       const endTotalSeconds = endMinuteValueInSeconds + endSecondsValue;
-      endTimeInMicro = endTotalSeconds * 1000;
+      endTimeInSeconds = endTotalSeconds;
     }
     
-    return { startTimeInMicro, endTimeInMicro }
+    return { startTimeInSeconds, endTimeInSeconds }
   }
 }
-
