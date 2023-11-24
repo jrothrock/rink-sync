@@ -1,10 +1,14 @@
 class SongsController < ApplicationController
   def new
     @song = Song.new
+
+    render template: "songs/views/new"
   end
 
   def index
     @songs = current_user.songs.all
+
+    render template: "songs/views/index"
   end
 
   def create
@@ -20,6 +24,8 @@ class SongsController < ApplicationController
 
   def edit
     @song = Song.find(params[:id])
+
+    render template: "songs/views/edit"
   end
 
   def update

@@ -35,5 +35,6 @@ module RinkSync
     config.eager_load_paths.concat(Rails.root.join('app', 'lib').glob("**/").select {|route| route.to_s.include?("app")})
 
     config.paths["app/views"] << Rails.root.join('app', 'lib')
+    config.paths["app/views"] << Rails.root.join('app', 'lib', 'components')
   end
 end
